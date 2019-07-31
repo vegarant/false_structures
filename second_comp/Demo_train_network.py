@@ -17,6 +17,7 @@ from nn_tools import read_count;
 from os.path import join;
 import sys;
 import os;
+import glob;
 import numpy as np;
 import tensorflow as tf;
 from Data_loader import Data_loader, create_data_iterator;
@@ -135,6 +136,8 @@ if not os.path.isdir(plot_dir):
 ckpt_dir = join(run_dir, ckpt_dir_name)
 if not os.path.isdir(ckpt_dir):
     os.mkdir(ckpt_dir);
+for filename in glob.glob(join(ckpt_dir, '*')):
+    os.remove(filename) 
 
 export_model = join(ckpt_dir, model_name);
 
@@ -260,7 +263,9 @@ with tf.Session() as sess:
     print('b = ', b);
     print('\nRunner: %d\n' % (count));
 
-    os.system('rm -f ' + join(plot_dir, 'plot_*'));
+    for filename in glob.glob(join(plot_dir, 'plot_*')):
+        os.remove(filename) 
+    #os.system('rm -f ' + join(plot_dir, 'plot_*'));
 
     if plot_training:    
         print('Creating: plot_loss.png');
